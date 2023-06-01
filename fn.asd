@@ -6,7 +6,7 @@
   :license  "MIT"
   :version "0.0.1"
   :serial t
-  :depends-on (#:unix-opts #:cl-plumbing #:str #:lquery #:dbi #:sxql)
+  :depends-on (#:unix-opts #:cl-plumbing #:str #:cl-fad)
   :components ((:file "package")
                (:file "fn"))
   :build-operation "program-op" ;; leave as is

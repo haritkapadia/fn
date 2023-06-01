@@ -6,4 +6,5 @@
    :*stack*
    :s-pop
    :s-delete
-   :s-get))
+   :s-get
+   :stream-to-string))
