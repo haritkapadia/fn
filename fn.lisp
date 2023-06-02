@@ -8,7 +8,7 @@
     (let (; Linux support
           (env-home (uiop:getenv "HOME"))
           (env-xdg-config-home (uiop:getenv "XDG_CONFIG_HOME"))
-                                        ; Windows support
+          ; Windows support
           (env-localappdata (uiop:getenv "LOCALAPPDATA")))
       (cond ((non-empty-stringp env-xdg-config-home)
              (cl-fad:pathname-as-directory env-xdg-config-home))
@@ -16,11 +16,6 @@
              (cl-fad:merge-pathnames-as-directory (cl-fad:pathname-as-directory env-home) #P".config/"))
             ((non-empty-stringp env-localappdata)
              (cl-fad:pathname-as-directory env-localappdata))))))
-
-(defun make-in-config (dir-name &optional file-name)
-  (let* ((dir (cl-fad:merge-pathnames-as-directory (get-config-path) (cl-fad:pathname-as-directory dir-name)))
-         (file (when file-name (cl-fad:merge-pathnames-as-file dir (cl-fad:pathname-as-file file-name)))))
-    (if file-name file dir)))
 
 (defvar *stack* (list))
 
@@ -81,8 +76,7 @@
 
 (defun configure ()
   "Load configuration file."
-  (let ((config-path (make-in-config "fn" "config.lisp")))
-    (ensure-directories-exist config-path)
+  (let ((config-path (merge-pathnames #P"fn/config.lisp" (get-config-path))))
     (when (probe-file config-path)
       (load config-path))))
 
