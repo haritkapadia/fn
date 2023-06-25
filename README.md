@@ -56,36 +56,28 @@ Every top-level expression is evaluated and pushed onto a stack. Combined with t
 ```sh
 # Pushing values to stack
 $ fn-lisp -w 1 3
+$ fn-py -w 1 3
 1
 3
 
-$ fn-py -w 1 3
-[1, 3]
-
 # Popping values from stack
 $ fn-lisp -w '1 3 (+ % %)'
-4
-
 $ fn-py -w 1 3 'P() + P()'
-[4]
+4
 
 # Copying top of stack
 $ fn-lisp -w '1 3 (+ $ $)'
+$ fn-py -w 1 3 'G() + G()'
 1
 3
 6
 
-$ fn-py -w 1 3 'G() + G()'
-[1, 3, 6]
-
 # Copying nth from top of stack
 $ fn-lisp -w '1 3 (+ $0 $1)'
+$ fn-py -w 1 3 'G(0) + G(1)'
 1
 3
 4
-
-$ fn-py -w 1 3 'G(0) + G(1)'
-[1, 3, 4]
 ```
 
 ## Configuration
