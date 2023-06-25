@@ -10,5 +10,5 @@
   :components ((:file "package")
                (:file "fn"))
   :build-operation "program-op" ;; leave as is
-  :build-pathname "fn"
+  :build-pathname "fn-lisp"
   :entry-point "fn::main")

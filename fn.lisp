@@ -3,6 +3,7 @@
 (in-package #:fn)
 
 (defun get-config-path ()
+  "Cross-platform path to configuration directories."
   (flet ((non-empty-stringp (str)
            (and (stringp str) (> (length str) 0))))
     (let (; Linux support
@@ -20,7 +21,7 @@
 (defvar *stack* (list))
 
 (defun s-pop (&optional (index 0))
-  "Remove element at `index' from `*stack*', then returns removed element."
+  "Remove element at `index' from `*stack*', then return removed element."
   (prog1 (elt *stack* index)
     (setq *stack* (delete-if (constantly t) *stack* :start index :count 1))))
 
@@ -51,8 +52,8 @@
     string))
 
 (defun set-macros ()
-  "Sets the ., %, and $ macro characters."
-  (set-macro-character #\. (stack-reader #'s-delete))
+  "Sets the !, %, and $ macro characters."
+  (set-macro-character #\! (stack-reader #'s-delete))
   (set-macro-character #\% (stack-reader #'s-pop))
   (set-macro-character #\$ (stack-reader #'s-get)))
 
@@ -103,7 +104,7 @@
      :short #\w
      :long "write")
     (:name :no-reader-macro
-     :description "Disable reader macros (. -> s-delete, % -> s-pop, $ -> s-get)."
+     :description "Disable reader macros (! -> s-delete, % -> s-pop, $ -> s-get)."
      :short #\m
      :long "no-reader-macro")
     (:name :no-config
