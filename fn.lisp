@@ -45,7 +45,7 @@
 
 (defun stream-to-string (stream)
   "Returns a string of the contents of an output `stream'. The `stream' is consumed."
-  (let ((string (make-array '(0) :element-type 'base-char
+  (let ((string (make-array '(0) :element-type 'character
                                  :fill-pointer 0 :adjustable t)))
     (with-output-to-string (out-stream string)
       (cl-plumbing:connect-streams stream out-stream :background nil))
