@@ -60,7 +60,7 @@ def main(args):
         if os.path.exists(config_path):
             with open(config_path, "rb") as fd:
                 compiled = compile(fd.read(), "string", "exec")
-                exec(compiled, globals(), locals())
+                exec(compiled, globals())
 
     if args["in"]:
         stack.append(sys.stdin.read())
@@ -68,7 +68,7 @@ def main(args):
         module = ast.parse(sys.stdin.read())
         for child in ast.iter_child_nodes(module):
             compiled = compile(ast.Expression(child.value), "string", "eval")
-            value = eval(compiled, globals(), locals())
+            value = eval(compiled, globals())
             stack.append(value)
 
     # REPL
@@ -77,19 +77,19 @@ def main(args):
         for child in ast.iter_child_nodes(module):
             if isinstance(child, ast.Expr):
                 compiled = compile(ast.Expression(child.value), "string", "eval")
-                value = eval(compiled, globals(), locals())
+                value = eval(compiled, globals())
                 if not isinstance(value, DoNotReturn):
                     stack.append(value)
             else:
                 compiled = compile(ast.Module([child], []), "string", "exec")
-                exec(compiled, globals(), locals())
+                exec(compiled, globals())
 
     if args["out"]:
         if stack:
             print(stack[-1])
     elif args["write"]:
         for e in stack:
-            print(e)
+            print(repr(e))
 
 
 if __name__ == "__main__":
