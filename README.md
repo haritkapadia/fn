@@ -8,6 +8,7 @@
 
 - Common Lisp: `fn-lisp`
 - Python 3: `fn-py`
+- Node.js: `fn-node`
 
 ## Usage
 
@@ -49,6 +50,23 @@ options:
   --no-config, -n  Disable configuration file.
 ```
 
+```
+fn-node [-h] [--in] [--out] [--read] [--write] [--no-config] [code ...]
+
+positional arguments:
+  code             JavaScript source code. Each returned value is pushed onto a stack.
+                   The functions pop(), get(), and del() manipulate the stack.
+                   They have short synonyms P(), G(), and D().
+
+options:
+  -h, --help       show this help message and exit
+  --in, -i         Read STDIN as string.
+  --out, -o        Print top of stack to STDOUT.
+  --read, -r       Read stack from STDIN.
+  --write, -w      Write stack to STDOUT.
+  --no-config, -n  Disable configuration file.
+```
+
 ## The Stack
 
 Every top-level expression is evaluated and pushed onto a stack. Combined with the stack manipulation macros `%`, `\$`, and `.`, data can be "piped" between expressions. This enables code to be written more linearly, which is important since text editing and balancing nested parentheses is difficult on most terminals.
@@ -57,17 +75,20 @@ Every top-level expression is evaluated and pushed onto a stack. Combined with t
 # Pushing values to stack
 $ fn-lisp -w 1 3
 $ fn-py -w 1 3
+$ fn-node -w 1 3
 1
 3
 
 # Popping values from stack
 $ fn-lisp -w '1 3 (+ % %)'
 $ fn-py -w 1 3 'P() + P()'
+$ fn-node -w 1 3 'P() + P()'
 4
 
 # Copying top of stack
 $ fn-lisp -w '1 3 (+ $ $)'
 $ fn-py -w 1 3 'G() + G()'
+$ fn-node -w 1 3 'G() + G()'
 1
 3
 6
@@ -75,6 +96,7 @@ $ fn-py -w 1 3 'G() + G()'
 # Copying nth from top of stack
 $ fn-lisp -w '1 3 (+ $0 $1)'
 $ fn-py -w 1 3 'G(0) + G(1)'
+$ fn-node -w 1 3 'G(0) + G(1)'
 1
 3
 4
@@ -90,6 +112,9 @@ The following file will be loaded before arguments are executed:
 - Python 3
   - Unix: `$XDG_CONFIG_HOME/fn/config.py` or `$HOME/.config/fn/config.py`
   - Windows: `%LOCALAPPDATA%\fn\config.py`
+- Node.js
+  - Unix: `$XDG_CONFIG_HOME/fn/config.js` or `$HOME/.config/fn/config.js`
+  - Windows: `%LOCALAPPDATA%\fn\config.js`
 
 ## Third-Party Libraries
 
