@@ -116,6 +116,8 @@ The following file will be loaded before arguments are executed:
   - Unix: `$XDG_CONFIG_HOME/fn/config.js` or `$HOME/.config/fn/config.js`
   - Windows: `%LOCALAPPDATA%\fn\config.js`
 
+See [example-config/](example-config/) for some ideas for what to put in your configuration files.
+
 ## Third-Party Libraries
 
 Add your load statements to the configuration file.
@@ -139,10 +141,16 @@ Command:
   echo 1 2 3 4 5 | fn-py -iw 'P().split()' 'list(map(int, P()))'; \
   echo 2 3 4 5 6 | fn-py -iw 'P().split()' 'list(map(int, P()))' \
 ) | fn-py -r '[a - b for a, b in zip(P(), P())]' 'print(*P())'
+
+( \
+  echo 1 2 3 4 5 | fn-node -iw 'P().split(" ").map(v => parseInt(v))'; \
+  echo 2 3 4 5 6 | fn-node -iw 'P().split(" ").map(v => parseInt(v))' \
+) | fn-node -ro 'P().map((e, i) => [e, G()[i]])' 'P().map(([a, b]) => a - b + "").join(" ")'
 ```
 
 Output:
 ```
+1 1 1 1 1
 1 1 1 1 1
 1 1 1 1 1
 ```
