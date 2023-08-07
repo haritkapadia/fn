@@ -117,7 +117,12 @@ const main = async () => {
     }
 
     const context = vm.createContext()
-    console.log()
+    context.P = P
+    context.G = G
+    context.D = D
+    context.pop = pop
+    context.get = get
+    context.del = del
     // Globals are set according to the documentation:
     // https://nodejs.org/docs/latest-v9.x/api/globals.html
     context.global = global
@@ -177,7 +182,7 @@ const main = async () => {
         console.log(stack[stack.length - 1])
     } else if (args["write"]) {
         for (const obj of stack) {
-            console.log(JSON.stringify(obj))
+            console.log(JSON.stringify(obj).trim())
         }
     }
 }
