@@ -24,6 +24,7 @@ def get_config_path():
 
 
 stack = []
+to_delete = {}
 
 
 class DoNotReturn:
@@ -32,18 +33,25 @@ class DoNotReturn:
 
 def pop(n=0):
     """Remove element at `n` from `stack`, then return removed element."""
-    return stack.pop(-(1 + n))
+    global to_delete
+    index = len(stack) - (1 + n) if n >= 0 else abs(n) - 1
+    to_delete[index] = True
+    return stack[index]
 
 
 def delete(n=0):
     """Remove element at `n` of `stack`, returning nothing. Useful for shrinking the stack."""
-    stack.pop(-(1 + n))
+    global to_delete
+    index = len(stack) - (1 + n) if n >= 0 else abs(n) - 1
+    to_delete[index] = True
     return DoNotReturn()
 
 
 def get(n=0):
     """Returns element at `n` of `stack`. Useful for growing the stack."""
-    return stack[-(1 + n)]
+    global to_delete
+    index = len(stack) - (1 + n) if n >= 0 else abs(n) - 1
+    return stack[index]
 
 
 P = pop
@@ -52,6 +60,8 @@ D = delete
 
 
 def main(args):
+    global stack
+    global to_delete
     # All execs and evals are kept in the same function to keep consistent context.
 
     # Configure
@@ -83,6 +93,9 @@ def main(args):
             else:
                 compiled = compile(ast.Module([child], []), "string", "exec")
                 exec(compiled, globals())
+
+        stack = [s for i, s in enumerate(stack) if not to_delete.get(i, False)]
+        to_delete = {}
 
     if args["out"]:
         if stack:
